@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using InventoryBack.Data;
 using Microsoft.EntityFrameworkCore;
+using InventoryBack.Services;
 
 namespace InventoryBack
 {
@@ -22,15 +23,18 @@ namespace InventoryBack
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IWarehouseService, WarehouseService>();
+             services.AddScoped<IWarehouseItemService, WarehouseItemService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite("Data Source=inventory.db"))
             ;
-            services.AddControllers();
+             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryBack", Version = "v1" });
-            });
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

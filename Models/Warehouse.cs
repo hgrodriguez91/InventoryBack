@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace InventoryBack.Models
 {
 
-    public class Item
+    public class Warehouse
     {
 
         [Key]
@@ -13,7 +13,7 @@ namespace InventoryBack.Models
         public long Id { get; set; }
 
         [Required]
-        public string Details { get; set; }
+        public string Name { get; set; }
 
         
     }

@@ -10,26 +10,27 @@ namespace InventoryBack.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class ItemsController : ControllerBase
+    public class WarehouseController : ControllerBase
     {
 
-        private readonly IItemService _itemService;
+        private readonly IWarehouseService _WService;
 
-        public ItemsController(IItemService itemService)
+        public WarehouseController(IWarehouseService WService)
         {
-            _itemService = itemService;
+            _WService = WService;
         }
-        [HttpGet]
-        public async Task<Item[]> Get()
+
+         [HttpGet]
+        public async Task<Warehouse[]> Get()
         {
-            return await _itemService.GetItemsAsync();
+            return await _WService.GetWarehouseAsync();
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            Item item = await _itemService.GetItemByIdsAsync(id);
+            Warehouse item = await _WService.GetWarehouseByIdAsync(id);
             if(item==null)
             return NotFound();    
             return Ok(item);
@@ -40,24 +41,24 @@ namespace InventoryBack.Controllers
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAsync(Item item)
+        public async Task<IActionResult> CreateAsync(Warehouse w)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            await _itemService.addItemAsync(item);
+            await _WService.AddWarehouseAsync(w);
 
-            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+            return CreatedAtAction(nameof(GetById), new { id = w.Id }, w);
         }
 
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> deleteItem(int id)
+        public async Task<IActionResult> deleteWarehouse(int id)
         {
-         var result = await _itemService.removeItemAsync(id);
+         var result = await _WService.RemoveWarehouseAsync(id);
          if(result== 0){
              return NotFound();
          }
@@ -65,16 +66,16 @@ namespace InventoryBack.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> updateItem(Item item){
+        public async Task<IActionResult> updateWarehouse(Warehouse w){
 
             if(!ModelState.IsValid){
                 return BadRequest();
             }
-           var result= await _itemService.UpdateItemAsync(item);
+           var result= await _WService.UpdateWarehouseAsync(w);
            if(result==null){
                return NotFound();
            }
-            return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+            return CreatedAtAction(nameof(GetById), new { id = w.Id }, w);
         }
 
     }
