@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 
+
 namespace InventoryBack.Services
 {
 
@@ -20,16 +21,18 @@ namespace InventoryBack.Services
 
         public async Task<int> AddItemToWarehouse(long item, long warehouse, int quantity, bool enabled)
         {
-            var result = await _context.item_Warehouses.Where(iw => iw.Warehouse_Id == warehouse && iw.Item_Id == item).FirstAsync();
+       /*     var result =  _context.item_Warehouses.Where(iw => iw.Warehouse_Id == warehouse && iw.Item_Id == item).First();
 
             if (result != null)
             {
                 result.quantity += quantity;
                 result.enabled = enabled;
                 _context.Update(result);
+                return await _context.SaveChangesAsync();
             }
             else
-            {
+            { 
+                 */
                 Item_Warehouse wi = new Item_Warehouse();
                 wi.DateAdded = System.DateTime.Now;
                 wi.quantity = quantity;
@@ -37,8 +40,9 @@ namespace InventoryBack.Services
                 wi.Warehouse_Id = warehouse;
 
                 _context.Add(wi);
-            }
-            return await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync();
+         //  }
+
 
         }
 
@@ -98,7 +102,7 @@ namespace InventoryBack.Services
                     to.quantity += quantity;
                     _context.Update(from);
                     _context.Update(to);
-                    return await _context.SaveChangesAsync();
+                    return (int)await _context.SaveChangesAsync();
                 }
                 else
                 {
@@ -110,7 +114,7 @@ namespace InventoryBack.Services
         public async Task<int> RemoveItemFromWarehouse(long w_id, long item_id)
         {
             var result = await _context.item_Warehouses.Where(iw => iw.Warehouse_Id == w_id && iw.Item_Id == item_id).FirstAsync();
-            if (result != null)
+            if (result != null && result.quantity == 0)
             {
                 _context.item_Warehouses.Remove(result);
                 return await _context.SaveChangesAsync();

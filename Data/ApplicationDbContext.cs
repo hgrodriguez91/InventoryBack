@@ -14,11 +14,13 @@ namespace InventoryBack.Data
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Item_Warehouse> item_Warehouses { get; set; }
 
-          protected override void OnModelCreating(ModelBuilder builder)
-     {
-         builder.Entity<Item_Warehouse>().HasKey(table => new {
-         table.Item_Id, table.Warehouse_Id
-         });
-     }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Item_Warehouse>().HasKey(iw => new { iw.Item_Id, iw.Warehouse_Id });
+            builder.Entity<Item_Warehouse>()
+                    .HasOne(iw => iw.Item).WithMany(it => it.Item_Warehouse).HasForeignKey(iw => iw.Item_Id);
+            builder.Entity<Item_Warehouse>()
+                   .HasOne(iw => iw.Warehouse).WithMany(w => w.Item_Warehouse).HasForeignKey( iw => iw.Warehouse_Id);
+        }
     }
 }

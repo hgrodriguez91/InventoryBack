@@ -65,6 +65,7 @@ namespace InventoryBack.Controllers
         }
 
         [HttpPut]
+        [Route("{id}")]
         public async Task<IActionResult> updateItem(Item item){
 
             if(!ModelState.IsValid){

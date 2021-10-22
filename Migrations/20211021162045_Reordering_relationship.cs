@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventoryBack.Migrations
 {
-    public partial class Adding_relatioship_to_items_warehouse : Migration
+    public partial class Reordering_relationship : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

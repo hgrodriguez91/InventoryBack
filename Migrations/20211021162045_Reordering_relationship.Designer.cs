@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryBack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211021032733_Adding_relatioship_to_items_warehouse")]
-    partial class Adding_relatioship_to_items_warehouse
+    [Migration("20211021162045_Reordering_relationship")]
+    partial class Reordering_relationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,13 +75,13 @@ namespace InventoryBack.Migrations
             modelBuilder.Entity("InventoryBack.Models.Item_Warehouse", b =>
                 {
                     b.HasOne("InventoryBack.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("Item_Warehouse")
                         .HasForeignKey("Item_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("InventoryBack.Models.Warehouse", "Warehouse")
-                        .WithMany()
+                        .WithMany("Item_Warehouse")
                         .HasForeignKey("Warehouse_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -89,6 +89,16 @@ namespace InventoryBack.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("InventoryBack.Models.Item", b =>
+                {
+                    b.Navigation("Item_Warehouse");
+                });
+
+            modelBuilder.Entity("InventoryBack.Models.Warehouse", b =>
+                {
+                    b.Navigation("Item_Warehouse");
                 });
 #pragma warning restore 612, 618
         }
