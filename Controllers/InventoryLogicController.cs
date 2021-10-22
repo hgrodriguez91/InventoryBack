@@ -25,10 +25,11 @@ namespace InventoryBack.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItemwarehose(Item_Warehouse iw)
         { 
-           if(ModelState)
-            
+           if(ModelState.IsValid){
            await _IWService.AddItemToWarehouse(iw.Item_Id, iw.Warehouse_Id, iw.quantity, iw.enabled);
-            return  Ok('Created');
+            return  Ok("Created");
+           }
+            return BadRequest();
         }
 
         [HttpPut]
